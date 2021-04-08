@@ -11,8 +11,8 @@ import {Size} from '../../config';
 import {Color} from '../../config';
 
 const DetailDoctor = props => {
-  console.log(props.route.params.item, 'ini datanya loh');
-  const dataDokter = props.route.params.item;
+  console.log(props, 'ini datanya loh');
+  const dataDokter = props.route.params.value;
   // bottom read area
   const [textShown, setTextShown] = useState(false); //To show ur remaining Text
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"

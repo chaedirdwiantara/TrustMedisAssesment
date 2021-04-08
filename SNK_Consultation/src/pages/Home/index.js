@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   FlatList,
+  SafeAreaView,
   Animated,
   Easing,
   Dimensions,
@@ -43,7 +44,8 @@ const Home = props => {
 
   //end of search setup area
 
-  const [dokter, setDokter] = useState([]);
+  // const [dokter, setDokter] = useState([]);
+  const [totalData, setTotalData] = useState(4);
   const getDokter = () => {
     Fire.database()
       .ref('dokter/')
@@ -51,7 +53,7 @@ const Home = props => {
       .then(res => {
         console.log('category dokter: ', res.val());
         if (res.val()) {
-          setDokter(res.val());
+          // setDokter(res.val());
           setfilterData(res.val());
           setmasterData(res.val());
         }
@@ -66,7 +68,7 @@ const Home = props => {
   }, []);
 
   return (
-    <View style={styles.page}>
+    <SafeAreaView style={styles.page}>
       <TextInput
         style={styles.search}
         value={search}
@@ -76,14 +78,15 @@ const Home = props => {
         onChangeText={text => searchFilter(text)}
       />
       <View style={styles.wrapperAvatar}>
-        <FlatList
+        {/* <FlatList
           showsVerticalScrollIndicator={false}
           // data={dokter}
+          horizontal
           data={filterData}
           keyExtractor={(item, index) => index.toString()}
-          numColumns={3}
+          // numColumns={3}
           renderItem={({item}) => {
-            console.log(item, 'ini ITEM yah');
+            // console.log(item, 'ini ITEM yah');
             return (
               <TouchableOpacity
                 style={styles.doctorContainer}
@@ -95,20 +98,45 @@ const Home = props => {
                     width: 100,
                     height: 100,
                     borderRadius: 200 / 2,
-                    marginRight: 15,
+                    // marginRight: 15,
                   }}
-                  source={{uri: item.photo}}
+                  source={{uri: item?.photo}}
                 />
-                <Text>{item.nama}</Text>
+                <Text>{item?.nama}</Text>
               </TouchableOpacity>
             );
           }}
-        />
+        /> */}
+        {filterData?.slice(0, totalData).map((value, index) => {
+          return (
+            <TouchableOpacity
+              style={styles.doctorContainer}
+              key={index.toString()}
+              onPress={() =>
+                props.navigation.navigate('DetailDoctor', {value})
+              }>
+              <Image
+                style={{
+                  width: 100,
+                  height: 100,
+                  borderRadius: 200 / 2,
+                  // marginRight: 15,
+                }}
+                source={{uri: value?.photo}}
+              />
+              <Text>{value?.nama}</Text>
+            </TouchableOpacity>
+          );
+        })}
       </View>
-      <TouchableOpacity style={styles.btnLoadMore}>
+      <TouchableOpacity
+        style={styles.btnLoadMore}
+        onPress={() => {
+          setTotalData(totalData + 6);
+        }}>
         <Text style={styles.btnTxt}>Load More</Text>
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   );
 };
 
@@ -138,11 +166,15 @@ const styles = StyleSheet.create({
     // alignItems: 'flex-end',
   },
   wrapperAvatar: {
+    paddingVertical: 10,
     // flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    margin: 30,
+    flexWrap: 'wrap',
+    // backgroundColor: 'red',
+    // width: Size.wp92,
+    justifyContent: 'space-around',
+    // alignItems: 'center',
+    // margin: 30,
     // backgroundColor: 'skyblue',
     // shadowColor: '#000',
     // shadowOffset: {
@@ -151,7 +183,6 @@ const styles = StyleSheet.create({
     // },
     // shadowOpacity: 0.25,
     // shadowRadius: 3.84,
-
     // elevation: 5,
   },
   wrapperButton: {
@@ -185,8 +216,11 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   doctorContainer: {
+    // width: '100%',
+    // flex: 1,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    marginBottom: Size.ms20,
+    // justifyContent: 'space-between',
   },
   search: {
     height: 50,
