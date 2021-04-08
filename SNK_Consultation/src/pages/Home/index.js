@@ -26,6 +26,7 @@ const Home = props => {
   const [masterData, setmasterData] = useState([]);
   const [search, setSearch] = useState('');
   const [searchValue, setSearchValue] = useState('');
+  const [buttonShowLess, setButtonShowLess] = useState(true);
 
   const searchFilter = text => {
     if (text) {
@@ -124,18 +125,30 @@ const Home = props => {
                 }}
                 source={{uri: value?.photo}}
               />
-              <Text>{value?.nama}</Text>
+              <Text>Dr. {value?.nama}</Text>
             </TouchableOpacity>
           );
         })}
       </View>
-      <TouchableOpacity
-        style={styles.btnLoadMore}
-        onPress={() => {
-          setTotalData(totalData + 6);
-        }}>
-        <Text style={styles.btnTxt}>Load More</Text>
-      </TouchableOpacity>
+      {buttonShowLess ? (
+        <TouchableOpacity
+          style={styles.btnLoadMore}
+          onPress={() => {
+            setTotalData(totalData + 6);
+            setButtonShowLess(false);
+          }}>
+          <Text style={styles.btnTxt}>Load More</Text>
+        </TouchableOpacity>
+      ) : (
+        <TouchableOpacity
+          style={styles.btnLoadMore}
+          onPress={() => {
+            setTotalData(totalData - 6);
+            setButtonShowLess(true);
+          }}>
+          <Text style={styles.btnTxt}>Load Less</Text>
+        </TouchableOpacity>
+      )}
     </SafeAreaView>
   );
 };
