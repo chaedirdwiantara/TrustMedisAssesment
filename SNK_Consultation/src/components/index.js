@@ -1,4 +1,4 @@
 import CardInputForm from './CardInputForm';
-import InputData from './InputData';
+import CardHome from './CardHome';
 
-export {CardInputForm, InputData};
+export {CardInputForm, CardHome};

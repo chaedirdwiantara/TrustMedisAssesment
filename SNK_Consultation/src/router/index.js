@@ -1,12 +1,12 @@
 import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import {DetailDoctor, Home} from '../pages';
+import {DetailDoctor, Home, AddDoctor} from '../pages';
 
 const Stack = createStackNavigator();
 
 const Router = () => {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator initialRouteName="Home">
       <Stack.Screen
         name="Home"
         component={Home}
@@ -15,7 +15,12 @@ const Router = () => {
       <Stack.Screen
         name="DetailDoctor"
         component={DetailDoctor}
-        options={{headerShown: true, title: 'Detail Dokter'}}
+        options={{headerShown: false, title: 'Detail Dokter'}}
+      />
+      <Stack.Screen
+        name="AddDoctor"
+        component={AddDoctor}
+        options={{headerShown: false, title: 'Tambah Dokter'}}
       />
     </Stack.Navigator>
   );
