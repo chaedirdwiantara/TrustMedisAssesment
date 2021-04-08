@@ -19,6 +19,30 @@ import {Fire, Size, Color} from '../../config';
 import {CardHome} from '../../components/';
 
 const Home = props => {
+  //search setup area
+
+  const [filterData, setfilterData] = useState([]);
+  const [masterData, setmasterData] = useState([]);
+  const [search, setSearch] = useState('');
+  const [searchValue, setSearchValue] = useState('');
+
+  const searchFilter = text => {
+    if (text) {
+      const newData = masterData.filter(item => {
+        const itemData = item.nama ? item.nama.toUpperCase() : ''.toUpperCase();
+        const textData = text.toUpperCase();
+        return itemData.indexOf(textData) > -1;
+      });
+      setfilterData(newData);
+      setSearch(text);
+    } else {
+      setfilterData(masterData);
+      setSearch(text);
+    }
+  };
+
+  //end of search setup area
+
   const [dokter, setDokter] = useState([]);
   const getDokter = () => {
     Fire.database()
@@ -28,6 +52,8 @@ const Home = props => {
         console.log('category dokter: ', res.val());
         if (res.val()) {
           setDokter(res.val());
+          setfilterData(res.val());
+          setmasterData(res.val());
         }
       })
       .catch(err => {
@@ -39,19 +65,25 @@ const Home = props => {
     getDokter();
   }, []);
 
-  //search setup area
-  const [filterData, setfilterData] = useState([]);
-  const [masterData, setmasterData] = useState([]);
-  //end of search setup area
-
   return (
     <View style={styles.page}>
+      <TextInput
+        style={styles.search}
+        value={search}
+        placeholder="search here"
+        underlineColorAndroid="transparent"
+        onSubmitEditing={() => openFilter()}
+        onChangeText={text => searchFilter(text)}
+      />
       <View style={styles.wrapperAvatar}>
         <FlatList
           showsVerticalScrollIndicator={false}
-          data={dokter}
+          // data={dokter}
+          data={filterData}
+          keyExtractor={(item, index) => index.toString()}
           numColumns={3}
           renderItem={({item}) => {
+            console.log(item, 'ini ITEM yah');
             return (
               <TouchableOpacity
                 style={styles.doctorContainer}
@@ -155,5 +187,13 @@ const styles = StyleSheet.create({
   doctorContainer: {
     alignItems: 'center',
     justifyContent: 'space-between',
+  },
+  search: {
+    height: 50,
+    borderWidth: 1,
+    paddingLeft: 20,
+    margin: 5,
+    borderColor: 'skyblue',
+    backgroundColor: 'white',
   },
 });
