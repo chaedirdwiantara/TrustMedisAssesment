@@ -39,107 +39,44 @@ const Home = props => {
     getDokter();
   }, []);
 
-  //SEARCH AREA
-  const screenWidth = Dimensions.get('screen').width;
-  const translateSearchBar = React.useRef(new Animated.Value(-100)).current;
-  const opacitySearchBar = React.useRef(new Animated.Value(0)).current;
-  const [searchValue, setSearchValue] = useState('');
-
-  const displaySearchBar = () => {
-    Animated.timing(translateSearchBar, {
-      toValue: 0,
-      easing: Easing.linear(),
-      duration: 700,
-      useNativeDriver: true,
-    }).start();
-    Animated.timing(opacitySearchBar, {
-      toValue: 1,
-      easing: Easing.linear(),
-      duration: 700,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const hideSearchBar = () => {
-    Animated.timing(translateSearchBar, {
-      toValue: -100,
-      easing: Easing.linear(),
-      duration: 700,
-      useNativeDriver: true,
-    }).start();
-    Animated.timing(opacitySearchBar, {
-      toValue: 0,
-      easing: Easing.linear(),
-      duration: 300,
-      useNativeDriver: true,
-    }).start();
-  };
-
-  const gotoSearchScreen = () => {
-    navigate('SearchScreen', {searchValue});
-  };
-  //END OF SEARCH AREA
+  //search setup area
+  const [filterData, setfilterData] = useState([]);
+  const [masterData, setmasterData] = useState([]);
+  //end of search setup area
 
   return (
-    <>
-      {/* search area */}
-      <View style={styles.header}>
-        {/* <TouchableOpacity
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            paddingRight: 10,
-          }}
-          onPress={displaySearchBar}>
-          <Fontisto name="search" size={25} style={styles.textStyle} />
-        </TouchableOpacity>
-        <Animated.View
-          style={{
-            flexDirection: 'row',
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            backgroundColor: 'white',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            height: 74,
-            alignContent: 'center',
-            transform: [{translateY: translateSearchBar}],
-          }}>
-          <TextInput
-            placeholder={'search'}
-            onSubmitEditing={() => gotoSearchScreen()}
-            onChangeText={value => setSearchValue(value)}></TextInput>
-          <TouchableOpacity onPress={hideSearchBar}>
-            <Ionicons name="close" size={30} style={styles.textStyle} />
-          </TouchableOpacity>
-        </Animated.View> */}
-      </View>
-      {/* end of search area */}
-      <View style={styles.page}>
-        <View style={styles.wrapperAvatar}>
-          {dokter.length > 0 ? (
-            dokter.map(key => (
+    <View style={styles.page}>
+      <View style={styles.wrapperAvatar}>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          data={dokter}
+          numColumns={3}
+          renderItem={({item}) => {
+            return (
               <TouchableOpacity
                 style={styles.doctorContainer}
-                onPress={() => props.navigation.navigate('DetailDoctor')}>
+                onPress={() =>
+                  props.navigation.navigate('DetailDoctor', {item})
+                }>
                 <Image
-                  style={{width: 100, height: 100, borderRadius: 200 / 2}}
-                  source={{uri: key.photo}}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    borderRadius: 200 / 2,
+                    marginRight: 15,
+                  }}
+                  source={{uri: item.photo}}
                 />
-                <Text>{key.nama}</Text>
+                <Text>{item.nama}</Text>
               </TouchableOpacity>
-            ))
-          ) : (
-            <Text>Daftar Kosong</Text>
-          )}
-        </View>
-        <TouchableOpacity style={styles.btnLoadMore}>
-          <Text style={styles.btnTxt}>Load More</Text>
-        </TouchableOpacity>
+            );
+          }}
+        />
       </View>
-    </>
+      <TouchableOpacity style={styles.btnLoadMore}>
+        <Text style={styles.btnTxt}>Load More</Text>
+      </TouchableOpacity>
+    </View>
   );
 };
 
@@ -174,16 +111,16 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     margin: 30,
-    backgroundColor: 'skyblue',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+    // backgroundColor: 'skyblue',
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 2,
+    // },
+    // shadowOpacity: 0.25,
+    // shadowRadius: 3.84,
 
-    elevation: 5,
+    // elevation: 5,
   },
   wrapperButton: {
     backgroundColor: 'skyblue',
@@ -217,6 +154,6 @@ const styles = StyleSheet.create({
   },
   doctorContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
 });

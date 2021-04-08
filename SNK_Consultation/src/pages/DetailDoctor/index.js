@@ -1,9 +1,18 @@
 import React, {Component, useState, useCallback} from 'react';
-import {Text, StyleSheet, View, Image, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  Linking,
+} from 'react-native';
 import {Size} from '../../config';
 import {Color} from '../../config';
 
-const DetailDoctor = () => {
+const DetailDoctor = props => {
+  console.log(props.route.params.item, 'ini datanya loh');
+  const dataDokter = props.route.params.item;
   // bottom read area
   const [textShown, setTextShown] = useState(false); //To show ur remaining Text
   const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
@@ -18,15 +27,46 @@ const DetailDoctor = () => {
   }, []);
   // end of bottom read area
 
+  //WHATSAPP SETUP AREA
+
+  const mobile_no = '085256585516';
+  const msg = `Hi, I’d like to make an appointment for dr. ${dataDokter.nama} today`;
+
+  // const [mobile_no, setMobile_no] = useState('');
+  // const [msg, setMSG] = useState('');
+  const sendOnWhatsApp = () => {
+    // let msg = state.msg;
+    // let mobile = state.mobile_no;
+    if (mobile_no) {
+      if (msg) {
+        // Kode negara 62 = Indonesia
+        let url = 'whatsapp://send?text=' + msg + '&phone=62' + mobile_no;
+        Linking.openURL(url)
+          .then(data => {
+            console.log('WhatsApp Opened');
+          })
+          .catch(() => {
+            alert('Make sure Whatsapp installed on your device');
+          });
+      } else {
+        alert('Please insert message to send');
+      }
+    } else {
+      alert('Please insert mobile no');
+    }
+  };
+  //END OF WHATSAPP SETUP AREA
+
   return (
     <View>
       <View>
         <Image
-          source={{uri: 'https://reactjs.org/logo-og.png'}}
+          source={{uri: dataDokter.photo}}
           style={{width: 400, height: 400}}
         />
       </View>
       <View style={styles.textContainer}>
+        <Text>Nama : {dataDokter.nama}</Text>
         <Text
           onTextLayout={onTextLayout}
           numberOfLines={textShown ? undefined : 5}
@@ -42,7 +82,7 @@ const DetailDoctor = () => {
       <TouchableOpacity
         style={styles.submitBtn}
         onPress={() => {
-          // filterCourseByCategoryID(item._id);
+          sendOnWhatsApp();
         }}>
         <Text style={styles.textStyle2}>Make Appoinment</Text>
       </TouchableOpacity>
