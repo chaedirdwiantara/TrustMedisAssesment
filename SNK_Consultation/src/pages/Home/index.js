@@ -141,7 +141,7 @@ const Home = props => {
         </TouchableOpacity>
       ) : (
         <TouchableOpacity
-          style={styles.btnLoadMore}
+          style={styles.btnLoadLess}
           onPress={() => {
             setTotalData(totalData - 6);
             setButtonShowLess(true);
@@ -212,6 +212,18 @@ const styles = StyleSheet.create({
   },
   btnLoadMore: {
     backgroundColor: 'skyblue',
+    padding: Size.h1,
+    paddingHorizontal: Size.wp5,
+    borderRadius: Size.ms4,
+    marginTop: Size.wp7,
+    marginRight: Size.wp3,
+    marginBottom: Size.wp13,
+    color: Color.darkblue,
+    elevation: 2,
+    alignSelf: 'center',
+  },
+  btnLoadLess: {
+    backgroundColor: Color.greenGum,
     padding: Size.h1,
     paddingHorizontal: Size.wp5,
     borderRadius: Size.ms4,
