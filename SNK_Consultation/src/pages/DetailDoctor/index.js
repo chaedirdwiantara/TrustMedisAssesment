@@ -9,23 +9,12 @@ import {
 } from 'react-native';
 import {Size} from '../../config';
 import {Color} from '../../config';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const DetailDoctor = props => {
   console.log(props, 'ini datanya loh');
   const dataDokter = props.route.params.value;
-  // bottom read area
-  const [textShown, setTextShown] = useState(false); //To show ur remaining Text
-  const [lengthMore, setLengthMore] = useState(false); //to show the "Read more & Less Line"
-  const toggleNumberOfLines = () => {
-    //To toggle the show text or hide it
-    setTextShown(!textShown);
-  };
-
-  const onTextLayout = useCallback(e => {
-    setLengthMore(e.nativeEvent.lines.length >= 4); //to check the text is more than 4 lines or not
-    // console.log(e.nativeEvent);
-  }, []);
-  // end of bottom read area
 
   //WHATSAPP SETUP AREA
 
@@ -35,8 +24,6 @@ const DetailDoctor = props => {
   // const [mobile_no, setMobile_no] = useState('');
   // const [msg, setMSG] = useState('');
   const sendOnWhatsApp = () => {
-    // let msg = state.msg;
-    // let mobile = state.mobile_no;
     if (mobile_no) {
       if (msg) {
         // Kode negara 62 = Indonesia
@@ -58,26 +45,34 @@ const DetailDoctor = props => {
   //END OF WHATSAPP SETUP AREA
 
   return (
-    <View>
+    <View style={styles.container}>
       <View>
         <Image
           source={{uri: dataDokter.photo}}
-          style={{width: 400, height: 400}}
+          style={{width: '100%', height: 350}}
         />
       </View>
-      <View style={styles.textContainer}>
-        <Text>Nama : {dataDokter.nama}</Text>
-        <Text
-          onTextLayout={onTextLayout}
-          numberOfLines={textShown ? undefined : 5}
-          style={styles.courseDetilTxt}>
-          Many of the images you will display in your app will not be available
-          at compile time, or you will want to load some dynamically to keep the
-          binary size down. Unlike with static resources, you will need to
-          manually specify the dimensions of your image. It's highly recommended
-          that you use https as well in order to satisfy App Transport Security
-          requirements on iOS.
-        </Text>
+      <View style={styles.descWrapper}>
+        <View style={styles.docNameWrapper}>
+          <Text style={styles.dokterName}>Dr. {dataDokter.nama}</Text>
+          <Text style={styles.dokterBidang}>{dataDokter.bidang}</Text>
+        </View>
+        <View style={styles.docMoreDesc}>
+          <View style={styles.locationWrapper}>
+            <Ionicons name="md-book" size={21} style={styles.iconStyle} />
+            <Text style={styles.locationStyle}>Lulusan Dari</Text>
+          </View>
+          <Text style={styles.dokterbLocation}>{dataDokter.lulusan}</Text>
+          <View style={styles.locationWrapper}>
+            <FontAwesome5
+              name="hospital-alt"
+              size={21}
+              style={styles.iconStyle}
+            />
+            <Text style={styles.locationStyle}>Tempat Praktik</Text>
+          </View>
+          <Text style={styles.dokterbLocation}>{dataDokter.location}</Text>
+        </View>
       </View>
       <TouchableOpacity
         style={styles.submitBtn}
@@ -93,30 +88,90 @@ const DetailDoctor = props => {
 export default DetailDoctor;
 
 const styles = StyleSheet.create({
-  textContainer: {
-    paddingHorizontal: Size.wp3,
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  descWrapper: {
+    paddingHorizontal: Size.wp4,
     paddingVertical: Size.wp3,
     marginHorizontal: Size.wp6,
     marginVertical: Size.wp5,
-    backgroundColor: 'silver',
-    // height: Size.h17,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   submitBtn: {
     backgroundColor: 'skyblue',
     padding: Size.h1,
     paddingHorizontal: Size.wp5,
     borderRadius: Size.ms4,
-    marginTop: Size.wp7,
+    marginTop: Size.wp5,
     marginRight: Size.wp3,
     marginBottom: Size.wp13,
     color: Color.darkblue,
-    elevation: 2,
     alignSelf: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   textStyle2: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: Size.ms16,
     textAlign: 'center',
+  },
+  docNameWrapper: {
+    paddingTop: Size.ms11,
+    paddingBottom: Size.ms20,
+    marginBottom: Size.ms20,
+    borderBottomWidth: 1,
+    borderColor: Color.silver,
+    alignItems: 'center',
+  },
+  dokterName: {
+    fontWeight: 'bold',
+    fontSize: Size.ms18,
+    color: Color.moreDarGrey,
+  },
+  dokterBidang: {
+    // fontWeight: 'bold',
+    fontSize: Size.ms16,
+    color: Color.darkGrey,
+  },
+  locationWrapper: {
+    flexDirection: 'row',
+  },
+  locationStyle: {
+    fontSize: Size.ms17,
+    color: Color.moreDarGrey,
+  },
+  docMoreDesc: {
+    paddingLeft: Size.wp7,
+  },
+  iconStyle: {
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: Color.darkGrey,
+    marginRight: Size.ms12,
+  },
+  dokterbLocation: {
+    paddingVertical: Size.ms11,
+    fontSize: Size.ms16,
+    color: Color.darkGrey,
+    paddingLeft: Size.ms33,
   },
 });

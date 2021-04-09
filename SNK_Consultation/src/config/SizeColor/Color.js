@@ -13,6 +13,9 @@ export const Color = {
   white: '#ffffff',
   greenGum: '#61D3A4',
   darkGrey: '#999999',
+  moreDarGrey: '#53565A',
   platinum: '#F5F5F5',
   redPink: '#DD5571',
+  tMedisGreen: '#28B87A',
+  tMedisBlue: '#293B61',
 };

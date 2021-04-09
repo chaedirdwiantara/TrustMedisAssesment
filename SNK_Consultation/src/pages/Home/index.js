@@ -12,12 +12,8 @@ import {
   Image,
   TextInput,
 } from 'react-native';
-import {Avatar} from 'react-native-elements';
-import {navigate} from '../../utils/Nav';
-import Fontisto from 'react-native-vector-icons/Fontisto';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Fire, Size, Color} from '../../config';
-import {CardHome} from '../../components/';
+import FastImage from 'react-native-fast-image';
 
 const Home = props => {
   //search setup area
@@ -69,7 +65,7 @@ const Home = props => {
   }, []);
 
   return (
-    <SafeAreaView style={styles.page}>
+    <SafeAreaView style={styles.container}>
       <TextInput
         style={styles.search}
         value={search}
@@ -79,35 +75,6 @@ const Home = props => {
         onChangeText={text => searchFilter(text)}
       />
       <View style={styles.wrapperAvatar}>
-        {/* <FlatList
-          showsVerticalScrollIndicator={false}
-          // data={dokter}
-          horizontal
-          data={filterData}
-          keyExtractor={(item, index) => index.toString()}
-          // numColumns={3}
-          renderItem={({item}) => {
-            // console.log(item, 'ini ITEM yah');
-            return (
-              <TouchableOpacity
-                style={styles.doctorContainer}
-                onPress={() =>
-                  props.navigation.navigate('DetailDoctor', {item})
-                }>
-                <Image
-                  style={{
-                    width: 100,
-                    height: 100,
-                    borderRadius: 200 / 2,
-                    // marginRight: 15,
-                  }}
-                  source={{uri: item?.photo}}
-                />
-                <Text>{item?.nama}</Text>
-              </TouchableOpacity>
-            );
-          }}
-        /> */}
         {filterData?.slice(0, totalData).map((value, index) => {
           return (
             <TouchableOpacity
@@ -116,7 +83,7 @@ const Home = props => {
               onPress={() =>
                 props.navigation.navigate('DetailDoctor', {value})
               }>
-              <Image
+              <FastImage
                 style={{
                   width: 100,
                   height: 100,
@@ -125,7 +92,8 @@ const Home = props => {
                 }}
                 source={{uri: value?.photo}}
               />
-              <Text>Dr. {value?.nama}</Text>
+              <Text style={styles.dokterNameStyle}>Dr. {value?.nama}</Text>
+              <Text style={styles.dokterBidangStyle}>{value?.bidang}</Text>
             </TouchableOpacity>
           );
         })}
@@ -156,8 +124,9 @@ const Home = props => {
 export default Home;
 
 const styles = StyleSheet.create({
-  page: {
+  container: {
     flex: 1,
+    backgroundColor: 'white',
   },
   textStyle: {
     color: 'white',
@@ -176,27 +145,13 @@ const styles = StyleSheet.create({
     width: '100%',
     elevation: 8,
     justifyContent: 'space-between',
-    // alignItems: 'flex-end',
   },
   wrapperAvatar: {
     paddingVertical: 10,
-    // flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
     // backgroundColor: 'red',
-    // width: Size.wp92,
     justifyContent: 'space-around',
-    // alignItems: 'center',
-    // margin: 30,
-    // backgroundColor: 'skyblue',
-    // shadowColor: '#000',
-    // shadowOffset: {
-    //   width: 0,
-    //   height: 2,
-    // },
-    // shadowOpacity: 0.25,
-    // shadowRadius: 3.84,
-    // elevation: 5,
   },
   wrapperButton: {
     backgroundColor: 'skyblue',
@@ -211,28 +166,42 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   btnLoadMore: {
-    backgroundColor: 'skyblue',
+    backgroundColor: Color.tMedisBlue,
     padding: Size.h1,
     paddingHorizontal: Size.wp5,
     borderRadius: Size.ms4,
     marginTop: Size.wp7,
     marginRight: Size.wp3,
     marginBottom: Size.wp13,
-    color: Color.darkblue,
-    elevation: 2,
     alignSelf: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   btnLoadLess: {
-    backgroundColor: Color.greenGum,
+    backgroundColor: Color.tMedisGreen,
     padding: Size.h1,
     paddingHorizontal: Size.wp5,
     borderRadius: Size.ms4,
     marginTop: Size.wp7,
     marginRight: Size.wp3,
     marginBottom: Size.wp13,
-    color: Color.darkblue,
-    elevation: 2,
     alignSelf: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+
+    elevation: 5,
   },
   btnTxt: {
     color: 'white',
@@ -252,7 +221,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     paddingLeft: 20,
     margin: 5,
-    borderColor: 'skyblue',
+    borderColor: Color.tMedisGreen,
     backgroundColor: 'white',
+  },
+  dokterNameStyle: {
+    fontWeight: 'bold',
+    fontSize: Size.ms15,
+  },
+  dokterBidangStyle: {
+    color: Color.darkGrey,
   },
 });
