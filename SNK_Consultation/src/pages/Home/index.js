@@ -1,15 +1,10 @@
-import React, {Component, useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Text,
   StyleSheet,
   View,
   TouchableOpacity,
-  FlatList,
   SafeAreaView,
-  Animated,
-  Easing,
-  Dimensions,
-  Image,
   TextInput,
 } from 'react-native';
 import {Fire, Size, Color} from '../../config';
@@ -17,11 +12,9 @@ import FastImage from 'react-native-fast-image';
 
 const Home = props => {
   //search setup area
-
   const [filterData, setfilterData] = useState([]);
   const [masterData, setmasterData] = useState([]);
   const [search, setSearch] = useState('');
-  const [searchValue, setSearchValue] = useState('');
   const [buttonShowLess, setButtonShowLess] = useState(true);
 
   const searchFilter = text => {
@@ -38,10 +31,8 @@ const Home = props => {
       setSearch(text);
     }
   };
-
   //end of search setup area
 
-  // const [dokter, setDokter] = useState([]);
   const [totalData, setTotalData] = useState(4);
   const getDokter = () => {
     Fire.database()
@@ -50,7 +41,6 @@ const Home = props => {
       .then(res => {
         console.log('category dokter: ', res.val());
         if (res.val()) {
-          // setDokter(res.val());
           setfilterData(res.val());
           setmasterData(res.val());
         }
@@ -84,12 +74,7 @@ const Home = props => {
                 props.navigation.navigate('DetailDoctor', {value})
               }>
               <FastImage
-                style={{
-                  width: 100,
-                  height: 100,
-                  borderRadius: 200 / 2,
-                  // marginRight: 15,
-                }}
+                style={styles.imgCircle}
                 source={{uri: value?.photo}}
               />
               <Text style={styles.dokterNameStyle}>Dr. {value?.nama}</Text>
@@ -134,10 +119,6 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'black',
   },
-  listKontak: {
-    paddingHorizontal: 30,
-    marginTop: 20,
-  },
   header: {
     flexDirection: 'row',
     backgroundColor: 'white',
@@ -147,11 +128,17 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   wrapperAvatar: {
-    paddingVertical: 10,
+    paddingVertical: Size.ms11,
     flexDirection: 'row',
     flexWrap: 'wrap',
     // backgroundColor: 'red',
     justifyContent: 'space-around',
+  },
+  imgCircle: {
+    width: Size.ms90,
+    height: Size.ms90,
+    borderRadius: 200 / 2,
+    // marginRight: 15,
   },
   wrapperButton: {
     backgroundColor: 'skyblue',

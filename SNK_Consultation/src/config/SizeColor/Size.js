@@ -29,6 +29,7 @@ export const Size = {
   ms33: moderateScale(33),
   ms40: moderateScale(40),
   ms50: moderateScale(50),
+  ms90: moderateScale(95),
 
   minwp1: widthPercentageToDP(-1),
   wp1: widthPercentageToDP(1),

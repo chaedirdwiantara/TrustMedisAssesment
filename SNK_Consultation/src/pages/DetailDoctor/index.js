@@ -1,4 +1,4 @@
-import React, {Component, useState, useCallback} from 'react';
+import React from 'react';
 import {
   Text,
   StyleSheet,
@@ -17,7 +17,6 @@ const DetailDoctor = props => {
   const dataDokter = props.route.params.value;
 
   //WHATSAPP SETUP AREA
-
   const mobile_no = '085256585516';
   const msg = `Hi, I’d like to make an appointment for dr. ${dataDokter.nama} today`;
 
@@ -109,7 +108,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   submitBtn: {
-    backgroundColor: 'skyblue',
+    backgroundColor: Color.tMedisBlue,
     padding: Size.h1,
     paddingHorizontal: Size.wp5,
     borderRadius: Size.ms4,
@@ -148,7 +147,6 @@ const styles = StyleSheet.create({
     color: Color.moreDarGrey,
   },
   dokterBidang: {
-    // fontWeight: 'bold',
     fontSize: Size.ms16,
     color: Color.darkGrey,
   },
